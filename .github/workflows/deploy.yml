@@ -1,4 +1,3 @@
-
 name: Deploy Flask App to EC2
 
 on:
@@ -21,10 +20,16 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            if [ -d "~/flask-deploy" ]; then
-              sudo rm -rf ~/flask-deploy
-            fi
+            # Clean up old folder completely
+            sudo rm -rf ~/flask-deploy
+
+            # Clone fresh code
             git clone https://github.com/janaksingh27/flask-devops-demo.git ~/flask-deploy
+
             cd ~/flask-deploy
+
+            # Run Docker Compose cleanly
             sudo docker compose down || true
             sudo docker compose up -d --build
+
+
